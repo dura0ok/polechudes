@@ -6,10 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "vite build && gh-pages -d dist -r git@github.com:stepan-neretin7/polechudes.git"
   },
   "devDependencies": {
     "sass": "^1.69.5",
     "vite": "^5.0.8"
+  },
+  "homepage": "https://stepan-neretin7.github.io/polechudes",
+  "dependencies": {
+    "vite-plugin-copy": "^0.1.6"
   }
 }
