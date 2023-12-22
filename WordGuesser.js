@@ -1,13 +1,14 @@
 export class WordGuesser {
     static #words = [
-        'хоровод',
-        'пуансеттия',
-        'бонбоньерка',
+        'колобок',
+        'апельсин',
+        'фейерверк',
+        'шерхебель',
         'простоквашино',
-        'дзюнанушик',
-        'декалькомания',
-        'кирибати'
+        'газонокосилка',
     ];
+
+    static #superWords = ["газонокосилка"]
 
     #wordsIndex = 0;
     #guessedLetters = new Set();
@@ -15,8 +16,17 @@ export class WordGuesser {
 
     generateNewWord() {
         this.#wordsIndex++;
+        this.#clearData();
+    }
+
+    #clearData() {
         this.#guessedLetters.clear();
         this.#guessedIndexes.clear();
+    }
+
+    prevWordGenerate(){
+        this.#wordsIndex--;
+        this.#clearData()
     }
 
     guessLetter(letter, position) {
@@ -62,8 +72,6 @@ export class WordGuesser {
     }
 
 
-
-
     guessLetterAtPosition(letter, position) {
         if (this.hasGuessedLetterAtPosition(letter, position)) {
             throw new Error(`Буква "${letter}" уже была угадана ранее.`);
@@ -92,5 +100,9 @@ export class WordGuesser {
 
     getCurrentWord() {
         return WordGuesser.#words[this.#wordsIndex];
+    }
+
+    isSuperWord(){
+        return WordGuesser.#superWords.includes(WordGuesser.#words[this.#wordsIndex])
     }
 }

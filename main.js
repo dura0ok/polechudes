@@ -1,8 +1,8 @@
 import "./app.scss";
-import { WordGuesser } from "./WordGuesser.js";
+import {WordGuesser} from "./WordGuesser.js";
 
 function play(src) {
-    return new Promise(function(resolve, reject) {   // return a promise
+    return new Promise(function (resolve, reject) {   // return a promise
         const audio = new Audio();                     // create audio wo/ src
         audio.preload = "auto";                      // intend to play through
         audio.autoplay = true;                       // autoplay when loaded
@@ -16,12 +16,17 @@ function play(src) {
 const wordGuesser = new WordGuesser();
 const wordDisplay = document.getElementById('wordDisplay');
 const keyboard = document.getElementById('keyboard');
-
-
+const msgElement = document.getElementById("msg")
 
 
 function renderWord() {
     const currentWord = wordGuesser.getCurrentWord();
+    msgElement.innerText = ""
+
+    if(wordGuesser.isSuperWord()){
+        msgElement.innerText = "Супер игра"
+    }
+    if(currentWord)
     wordDisplay.innerHTML = ""; // Clear word display before rendering
 
     for (let i = 0; i < currentWord.length; i++) {
@@ -57,7 +62,7 @@ async function handleKeyClick(letter, keyElement) {
         displayResultImage(isCorrectGuess)
         if (isCorrectGuess) {
             markKeyAsCorrect(keyElement);
-        }else {
+        } else {
             await play('./sounds/incorrect.mp3');
             markKeyAsIncorrect(keyElement);
         }
@@ -140,11 +145,19 @@ function displayResultImage(isCorrect) {
 }
 
 
-
 renderWord();
 renderKeyboard();
 wordDisplay.addEventListener('click', async (event) => {
     if (event.target.classList.contains('word-letter')) {
         await handleWordClick(event);
     }
+});
+
+
+document.getElementById('nextWordButton').addEventListener('click', async () => {
+    wordGuesser.generateNewWord();
+    renderWord();
+    clearStyles();
+    // Очистить изображение результата при прокрутке нового слова
+    document.querySelector('#imageContainer').style.display = 'none';
 });
